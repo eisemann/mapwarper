@@ -77,6 +77,14 @@
       | <%= render :partial  => 'maps/map_type', :object => @map %>
     <% end %>
 
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added link to View Related Maps
+### ------------------------------------------------------------------------------------------------------------------------ ###
+link_to("View Related Maps", {:controller => "maps", :action => "index", :view_related => @map.map_link_nepa}) 
+-%>
+
+
         <div style="clear:both;"></div>
          <%= render :partial => 'shared/addthis', :locals => {:title => map.title, :description =>map.description} %>
          <%= render :partial => 'shared/export_window', :locals => {:map => @map} %>

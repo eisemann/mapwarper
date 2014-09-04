@@ -13,9 +13,32 @@
       <b>Tags </b><span class="tiny-text">(comma separated)</span> <br />
       <%= f.text_field :tag_list %>
     </p>
-       <p>
-      <%= f.select(:map_type, Map.map_type_hash, :selected=>:is_map) -%>
-    </p>
+
+
+
+<p>
+<%= 
+### BWE UPDATE: ###
+# description span
+-%>
+<span>Map Type: </span>	
+<%= f.select(:map_type, Map.map_type_hash, :selected=>:is_map) -%>
+</p>
+
+
+
+<%= 
+### BWE UPDATE: map_type_nepa description and control ###
+-%>
+<p>
+<span>NEPA Map Type: </span> 
+<%= 
+f.select(:map_type_nepa, Map.map_type_nepa_hash, :selected=>:project_map) 
+-%>
+</p>
+
+
+
   </div>
 
   <div class="column span-12 last">

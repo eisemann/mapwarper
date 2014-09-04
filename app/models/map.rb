@@ -31,13 +31,40 @@ class Map < ActiveRecord::Base
   acts_as_commentable
   acts_as_enum :status, [:unloaded, :loading, :available, :warping, :warped, :published]
   acts_as_enum :mask_status, [:unmasked, :masking, :masked]
+  
+
   acts_as_enum :map_type, [:index, :is_map, :not_map ]
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - add map_type_nepa enum
+### ------------------------------------------------------------------------------------------------------------------------ ###
+acts_as_enum :map_type_nepa, [:project_map, :reference_map ]
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - add map_link_nepa string
+### ------------------------------------------------------------------------------------------------------------------------ ###
+#attr_protected :map_link_nepa # as :string
+
+
   acts_as_enum :rough_state, [:step_1, :step_2, :step_3, :step_4]
-  default_values :status => :unloaded, :mask_status => :unmasked, :map_type => :is_map, :rough_state => :step_1
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added map_type_nepa default value
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  default_values :status => :unloaded, :mask_status => :unmasked, :map_type => :is_map, :map_type_nepa => :project_map, :rough_state => :step_1
+
 
   named_scope :public, :conditions => ['public = ?', true]
   named_scope :warped, :conditions => {:status => [Map.status(:warped), Map.status(:published)], :map_type => Map.map_type(:is_map) }
   named_scope :published, :conditions => {:status => Map.status(:published), :map_type => Map.map_type(:is_map)}
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - map_type_nepa scopes
+### ------------------------------------------------------------------------------------------------------------------------ ###
+named_scope :nepa_project_map, :conditions => {:map_type_nepa => Map.map_type_nepa(:project_map)}
+named_scope :nepa_reference_map, :conditions => {:map_type_nepa => Map.map_type_nepa(:reference_map)}
+
 
   named_scope :real_maps, :conditions => {:map_type => Map.map_type(:is_map)}
   attr_accessor :error
@@ -301,6 +328,15 @@ class Map < ActiveRecord::Base
     Hash[*keys.zip(values).flatten]
   end
 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - map_type_nepa_hash method ###
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  def self.map_type_nepa_hash
+    values = Map::MAP_TYPE_NEPA
+    keys = ["Project Map", "Reference Map"]
+    Hash[*keys.zip(values).flatten]
+  end
+
 
   def self.max_attachment_size
     max_attachment_size =  defined?(MAX_ATTACHMENT_SIZE)? MAX_ATTACHMENT_SIZE : nil
@@ -324,6 +360,7 @@ class Map < ActiveRecord::Base
   #############################################
   #INSTANCE METHODS
   #############################################
+
   def warped?
     status == :warped
   end

@@ -22,10 +22,38 @@
       <br />
     <% end -%>
     </p>
-       <p>
-         <%= @map.map_type.to_s %>
 
-    </p>
+
+<p>
+<%= 
+### BWE UPDATE: ###
+# description span
+-%>
+<span>Map Type: </span>	
+<%= @map.map_type.to_s %>
+</p>
+
+<p>
+<%= 
+### BWE UPDATE: ###
+# map_type_nepa description and value
+-%>
+<span>NEPA Map Type: </span>	
+<%= @map.map_type_nepa.to_s %>
+</p>
+
+<p>
+<%= 
+### BWE UPDATE: ###
+# map_link_nepa description and value
+-%>
+<span>NEPA Map Link: </span>	
+<%= @map.map_link_nepa.to_s %>
+</p>
+
+
+
+
   </div>
 
   <div class="column span-12 last">

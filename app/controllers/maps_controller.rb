@@ -4,8 +4,12 @@ class MapsController < ApplicationController
   before_filter :login_or_oauth_required, :only => [:new, :create, :edit, :update, :destroy, :delete, :warp, :rectify, :clip, :align,
  :warp_align, :mask_map, :delete_mask, :save_mask, :save_mask_and_warp, :set_rough_state, :set_rough_centroid ]
   before_filter :check_administrator_role, :only => [:publish]
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added :nepaproject, :nepareference exclusions to before_filter :find_map_if_available
+### ------------------------------------------------------------------------------------------------------------------------ ###
   before_filter :find_map_if_available,
-    :except => [:show, :index, :wms, :tile, :mapserver_wms, :warp_aligned, :status, :new, :create, :update, :edit, :tag, :geosearch]
+    :except => [:show, :index, :nepaproject, :nepareference, :wms, :tile, :mapserver_wms, :warp_aligned, :status, :new, :create, :update, :edit, :tag, :geosearch]
 
   before_filter :check_link_back, :only => [:show, :warp, :clip, :align, :warped, :export, :activity]
   before_filter :check_if_map_is_editable, :only => [:edit, :update]
@@ -230,6 +234,7 @@ class MapsController < ApplicationController
 
 
   def index
+
     sort_init('updated_at', {:default_order => "desc"})
     
     sort_update
@@ -237,6 +242,113 @@ class MapsController < ApplicationController
     request.query_string.length > 0 ?  qstring = "?" + request.query_string : qstring = ""
 
     set_session_link_back url_for(:controller=> 'maps', :action => 'index',:skip_relative_url_root => false, :only_path => false )+ qstring
+
+    @query = params[:query]
+
+    @field = %w(tags title description status publisher authors).detect{|f| f == (params[:field])}
+    
+   unless @field == "tags"
+     
+     @field = "title" if @field.nil?
+
+      #we'll use POSIX regular expression for searches    ~*'( |^)robinson([^A-z]|$)' and to strip out brakets etc  ~*'(:punct:|^|)plate 6([^A-z]|$)';
+    if @query && @query.strip.length > 0 && @field
+        conditions = ["#{@field}  ~* ?", '(:punct:|^|)'+@query+'([^A-z]|$)']
+      else
+        conditions = nil
+      end
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# BWE Update: check to see if we are getting only related maps based on map_link_nepa
+### ------------------------------------------------------------------------------------------------------------------------ ###
+if(params.has_key?("view_related"))
+	logger.debug "[BWE] VIEW RELATED: map_link_nepa = '" + params[:view_related].to_s + "'"
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# BWE Update: add map_link_nepa to the conditions using the query string value
+### ------------------------------------------------------------------------------------------------------------------------ ###
+	if (conditions.nil?)
+		#conditions = ["map_link_nepa = '"+params[:view_related].to_s+"'"]
+		#conditions = ["map_link_nepa = '"+h(params[:view_related].to_s)+"'"]
+		#conditions = ["map_link_nepa = '"+'(:punct:|^|)'+params[:view_related].to_s+'([^A-z]|$)'+"'"]
+		conditions = ["map_link_nepa  ~* ?", '(:punct:|^|)'+params[:view_related].to_s+'([^A-z]|$)']
+#	else
+#		conditions = conditions + ["map_link_nepa = 'nepa'"]
+	end
+end
+
+
+      if params[:sort_order] && params[:sort_order] == "desc"
+        sort_nulls = " NULLS LAST"
+      else
+        sort_nulls = " NULLS FIRST"
+      end
+      @per_page = params[:per_page] || 10
+      paginate_params = {
+        :page => params[:page],
+        :per_page => @per_page,
+        :order => sort_clause + sort_nulls,
+        :conditions => conditions
+      }
+
+
+
+      if @show_warped == "1"
+        @maps = Map.warped.public.paginate(paginate_params)
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE Question: is the following case ever met if @show_warped == "1"?  Doesn't seem like it given the previous case
+### ------------------------------------------------------------------------------------------------------------------------ ###
+      elsif @show_warped == "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.warped.paginate(paginate_params)
+
+      elsif  @show_warped != "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.paginate(paginate_params)
+      else
+        @maps = Map.public.paginate(paginate_params)
+      end
+
+
+
+      @html_title = "Browse Maps"
+      if request.xhr?
+        render :action => 'index.rjs'
+      else
+        respond_to do |format|
+        format.html{ render :layout =>'application' }  # index.html.erb
+        format.xml  { render :xml => @maps.to_xml(:root => "maps", :except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]) {|xml|
+        xml.tag!'stat', "ok"
+        xml.tag!'total-entries', @maps.total_entries
+        xml.tag!'per-page', @maps.per_page
+        xml.tag!'current-page',@maps.current_page} }
+
+        format.json { render :json => {:stat => "ok",
+          :current_page => @maps.current_page,
+          :per_page => @maps.per_page,
+          :total_entries => @maps.total_entries,
+          :total_pages => @maps.total_pages,
+          :items => @maps.to_a}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid], :methods => :depicts_year) , :callback => params[:callback]
+        }
+        end
+      end
+   else
+     redirect_to :action => 'tag', :id => @query
+   end
+  end
+
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# BWE update: added nepaproject
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  def nepaproject
+    sort_init('updated_at', {:default_order => "desc"})
+    
+    sort_update
+    @show_warped = params[:show_warped]
+    request.query_string.length > 0 ?  qstring = "?" + request.query_string : qstring = ""
+
+    #set_session_link_back url_for(:controller=> 'maps', :action => 'index',:skip_relative_url_root => false, :only_path => false )+ qstring
 
     @query = params[:query]
 
@@ -266,41 +378,166 @@ class MapsController < ApplicationController
         :conditions => conditions
       }
 
-      if @show_warped == "1"
-        @maps = Map.warped.public.paginate(paginate_params)
-      elsif @show_warped == "1" && (logged_in? and current_user.has_role?("editor"))
-        @maps = Map.warped.paginate(paginate_params)
-      elsif  @show_warped != "1" && (logged_in? and current_user.has_role?("editor"))
-        @maps = Map.paginate(paginate_params)
-      else
-        @maps = Map.public.paginate(paginate_params)
-      end
 
-      @html_title = "Browse Maps"
+logger.debug "[BWE] nepaproject pre get maps"
+      if @show_warped == "1"
+        @maps = Map.nepa_project_map.warped.public.paginate(paginate_params)
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE Question: is the following case ever met if @show_warped == "1"?  Doesn't seem like it given the previous case
+### ------------------------------------------------------------------------------------------------------------------------ ###
+      elsif @show_warped == "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.nepa_project_map.warped.paginate(paginate_params)
+
+      elsif  @show_warped != "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.nepa_project_map.paginate(paginate_params)
+      else
+        @maps = Map.nepa_project_map.public.paginate(paginate_params)
+      end
+logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.total_entries.to_s
+
+
+      @html_title = "Browse NEPA Project Maps"
       if request.xhr?
         render :action => 'index.rjs'
       else
-        respond_to do |format|
-        format.html{ render :layout =>'application' }  # index.html.erb
-        format.xml  { render :xml => @maps.to_xml(:root => "maps", :except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]) {|xml|
-        xml.tag!'stat', "ok"
-        xml.tag!'total-entries', @maps.total_entries
-        xml.tag!'per-page', @maps.per_page
-        xml.tag!'current-page',@maps.current_page} }
+	logger.debug "[BWE] nepaproject pre render"
 
-        format.json { render :json => {:stat => "ok",
-          :current_page => @maps.current_page,
-          :per_page => @maps.per_page,
-          :total_entries => @maps.total_entries,
-          :total_pages => @maps.total_pages,
-          :items => @maps.to_a}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid], :methods => :depicts_year) , :callback => params[:callback]
-        }
-        end
+	respond_to do |format|
+		format.html{ render :layout =>'application' }  # nepaproject.html.erb
+		
+		format.xml  {
+			render :xml => @maps.to_xml(
+				:root => "maps", 
+				:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]
+			) { |xml|
+				xml.tag!'stat', "ok"
+				xml.tag!'total-entries', @maps.total_entries
+				xml.tag!'per-page', @maps.per_page
+				xml.tag!'current-page',@maps.current_page
+			}
+		}
+
+		format.json { 
+			render :json => {
+				:stat => "ok",
+				:current_page => @maps.current_page,
+				:per_page => @maps.per_page,
+				:total_entries => @maps.total_entries,
+				:total_pages => @maps.total_pages,
+				:items => @maps.to_a
+			}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid], :methods => :depicts_year),
+				:callback => params[:callback]
+		}
+	end
       end
    else
      redirect_to :action => 'tag', :id => @query
    end
+
   end
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# BWE update: added nepareference
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  def nepareference
+    sort_init('updated_at', {:default_order => "desc"})
+    
+    sort_update
+    @show_warped = params[:show_warped]
+    request.query_string.length > 0 ?  qstring = "?" + request.query_string : qstring = ""
+
+    #set_session_link_back url_for(:controller=> 'maps', :action => 'index',:skip_relative_url_root => false, :only_path => false )+ qstring
+
+    @query = params[:query]
+
+    @field = %w(tags title description status publisher authors).detect{|f| f == (params[:field])}
+    
+   unless @field == "tags"
+     
+     @field = "title" if @field.nil?
+
+      #we'll use POSIX regular expression for searches    ~*'( |^)robinson([^A-z]|$)' and to strip out brakets etc  ~*'(:punct:|^|)plate 6([^A-z]|$)';
+    if @query && @query.strip.length > 0 && @field
+        conditions = ["#{@field}  ~* ?", '(:punct:|^|)'+@query+'([^A-z]|$)']
+      else
+        conditions = nil
+      end
+
+      if params[:sort_order] && params[:sort_order] == "desc"
+        sort_nulls = " NULLS LAST"
+      else
+        sort_nulls = " NULLS FIRST"
+      end
+      @per_page = params[:per_page] || 10
+      paginate_params = {
+        :page => params[:page],
+        :per_page => @per_page,
+        :order => sort_clause + sort_nulls,
+        :conditions => conditions
+      }
+
+
+logger.debug "[BWE] nepaproject pre get maps"
+      if @show_warped == "1"
+        @maps = Map.nepa_reference_map.warped.public.paginate(paginate_params)
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE Question: is the following case ever met if @show_warped == "1"?  Doesn't seem like it given the previous case
+### ------------------------------------------------------------------------------------------------------------------------ ###
+      elsif @show_warped == "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.nepa_reference_map.warped.paginate(paginate_params)
+
+      elsif  @show_warped != "1" && (logged_in? and current_user.has_role?("editor"))
+        @maps = Map.nepa_reference_map.paginate(paginate_params)
+      else
+        @maps = Map.nepa_reference_map.public.paginate(paginate_params)
+      end
+logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.total_entries.to_s
+
+
+      @html_title = "Browse NEPA Reference Maps"
+      if request.xhr?
+        render :action => 'index.rjs'
+      else
+	logger.debug "[BWE] nepaproject pre render"
+
+	respond_to do |format|
+		format.html{ render :layout =>'application' }  # nepareference.html.erb
+		
+		format.xml  {
+			render :xml => @maps.to_xml(
+				:root => "maps", 
+				:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]
+			) { |xml|
+				xml.tag!'stat', "ok"
+				xml.tag!'total-entries', @maps.total_entries
+				xml.tag!'per-page', @maps.per_page
+				xml.tag!'current-page',@maps.current_page
+			}
+		}
+
+		format.json { 
+			render :json => {
+				:stat => "ok",
+				:current_page => @maps.current_page,
+				:per_page => @maps.per_page,
+				:total_entries => @maps.total_entries,
+				:total_pages => @maps.total_pages,
+				:items => @maps.to_a
+			}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid], :methods => :depicts_year),
+				:callback => params[:callback]
+		}
+	end
+      end
+   else
+     redirect_to :action => 'tag', :id => @query
+   end
+
+  end
+
+
+
 
   def tag
     sort_init('updated_at', {:default_order => "desc"})
@@ -318,6 +555,9 @@ class MapsController < ApplicationController
       format.rss  { render  :layout => false }
      end
   end
+
+
+
 
   def new
     @map = Map.new
@@ -431,6 +671,12 @@ class MapsController < ApplicationController
     @selected_tab = 0
     @disabled_tabs =[]
     @map = Map.find(params[:id])
+
+
+#logger.debug "[BWE] map_link_nepa " + @map.map_link_nepa
+
+
+
     @html_title = "Viewing Map "+@map.id.to_s
 
     if @map.status.nil? || @map.status == :unloaded
@@ -826,16 +1072,24 @@ end
     end
   end
 
+
+
  def bad_record
-      #logger.error("not found #{params[:id]}")
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - uncommented logger error and added the MC::b_r text
+### ------------------------------------------------------------------------------------------------------------------------ ###
+     logger.error("MC::b_r - not found #{params[:id]}")
+
      respond_to do | format |
       format.html do
-       flash[:notice] = "Map not found"
+       flash[:notice] = "Map not found!"
        redirect_to :action => :index
       end
      format.json {render :json => {:stat => "not found", :items =>[]}.to_json, :status => 404}
      end
  end
+
+
 
   #only allow editing by a user if the user owns it, or if and editor tries to edit it
   def check_if_map_is_editable
