@@ -2,30 +2,29 @@
   <ul id="navlist">
     <li><%= link_to_unless_current("Home", :controller => 'home', :action=>'index') { "<span>Home</span>" } %></li>
 
-    <li>
-	<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE update - removed original Browse All Maps
-### ------------------------------------------------------------------------------------------------------------------------ ###
-#link_to_unless((current_page?(maps_url) && !current_page?(maps_url(:show_warped =>1))),"Browse All Maps", maps_url) { "<span>Browse All Maps</span>" } 
 
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added Browse All Maps back in with a slightly altered heading
+### ------------------------------------------------------------------------------------------------------------------------ ###
+%>
+<li><%= link_to_unless((current_page?(maps_url) && !current_page?(maps_url(:show_warped =>1))),"All Maps", maps_url) { "<span>All Maps</span>" } %></li>
+
+
+<%
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added Browse Project Maps
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-link_to_unless_current("Browse All Project Maps", :controller => 'maps', :action=>'nepaproject') { "<span>Browse All Project Maps</span>" } 
-
-	%>
-    </li>
+%>
+<li><% link_to_unless_current("Project Maps", :controller => 'maps', :action=>'nepaproject') { "<span>Project Maps</span>" } %></li>
 
 
-    <li>
-	<%= 
+<%
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added Browse Reference Maps
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-link_to_unless_current("Browse All Reference Maps", :controller => 'maps', :action=>'nepareference') { "<span>Browse All Reference Maps</span>" } 
-	%>
-    </li>
+%>
+<li><%= link_to_unless_current("Reference Maps", :controller => 'maps', :action=>'nepareference') { "<span>Reference Maps</span>" } %></li>
 
 
 
