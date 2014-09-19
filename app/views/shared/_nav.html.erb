@@ -11,15 +11,16 @@
 <li><%= link_to_unless((current_page?(maps_url) && !current_page?(maps_url(:show_warped =>1))),"All Maps", maps_url) { "<span>All Maps</span>" } %></li>
 
 
-<%
+<%=
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added Browse Project Maps
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 %>
-<li><% link_to_unless_current("Project Maps", :controller => 'maps', :action=>'nepaproject') { "<span>Project Maps</span>" } %></li>
+<li><%= link_to_unless_current("Project Maps", :controller => 'maps', :action=>'nepaproject') { "<span>Project Maps</span>" } %></li>
 
 
-<%
+
+<%=
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added Browse Reference Maps
 ### ------------------------------------------------------------------------------------------------------------------------ ###
