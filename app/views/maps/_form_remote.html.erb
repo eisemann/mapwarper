@@ -18,25 +18,33 @@
 
 <p>
 <%= 
-### BWE UPDATE: ###
-# description span
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added span element
+### ------------------------------------------------------------------------------------------------------------------------ ###
 -%>
 <span>Map Type: </span>	
-<%= 
-### BWE UPDATE: ###
-# initial code defaults to :is_map even if another is selected (seems like a little bug)
-# f.select(:map_type, Map.map_type_hash, :selected=>:is_map) 
 
-### BWE UPDATE: ###
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - removed original code
+# initial code defaults to :is_map even if another is selected (seems like a little bug)
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# f.select(:map_type, Map.map_type_hash, :selected=>:is_map) 
+-%>
+
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - altered original code
 # by default f.select uses the DB value (new) or first value (new) to select
+### ------------------------------------------------------------------------------------------------------------------------ ###
 f.select(:map_type, Map.map_type_hash) 
 -%>
 </p>
 
-
-
 <%= 
-### BWE UPDATE: map_type_nepa description and control ###
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added map_type_nepa description and control
+### ------------------------------------------------------------------------------------------------------------------------ ###
 -%>
 <p>
 <span>NEPA Map Type: </span> 
@@ -45,9 +53,21 @@ f.select(:map_type_nepa, Map.map_type_nepa_hash)
 -%>
 </p>
 
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added project map data
+### ------------------------------------------------------------------------------------------------------------------------ ###
+-%>
+<% if @map.project_map? -%>
+<span>TODO: show nepa project data controls</span>
+<% end -%>
+
+
 
 <%= 
-### BWE UPDATE: map_link_nepa description and control ###
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added map_link_nepa description and control
+### ------------------------------------------------------------------------------------------------------------------------ ###
 -%>
 <p>
 <span>NEPA Map Link: </span>	

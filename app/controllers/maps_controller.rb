@@ -923,6 +923,8 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
 
 
   def wms
+
+#logger.debug "BWE in wms: "+MAPSERVER_URL
     
     unless @@mapscript_exists
       mapserver_wms
@@ -1039,12 +1041,16 @@ end
     #use Map.map_file_path so we don't have to do a db call
     status = params["STATUS"].to_s.downcase || "unwarped"
     styles = "&styles=" # required to stop mapserver being pedantic on older versions
+
+logger.debug "BWE in mapserver_wms: "+MAPSERVER_URL
+
      if status == "unwarped"
       mapserver_url = MAPSERVER_URL + '?map=' + Map.mapfile_path(params[:id])  + styles + "&layers=" + params[:id].to_s + "_original"
     else
       mapserver_url = MAPSERVER_URL + '?map=' + Map.mapfile_path(params[:id])  + styles + "&layers=" + params[:id].to_s
     end
     mapserver_url += "&"+request.query_string
+
     redirect_to(mapserver_url)
   end
 

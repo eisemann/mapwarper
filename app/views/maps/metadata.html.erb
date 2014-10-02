@@ -26,35 +26,16 @@
 
 <p>
 <%= 
-### BWE UPDATE: ###
-# description span
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added span element
+### ------------------------------------------------------------------------------------------------------------------------ ###
 -%>
 <span>Map Type: </span>	
 <%= @map.map_type.to_s %>
 </p>
-
-<p>
-<%= 
-### BWE UPDATE: ###
-# map_type_nepa description and value
--%>
-<span>NEPA Map Type: </span>	
-<%= @map.map_type_nepa.to_s %>
-</p>
-
-<p>
-<%= 
-### BWE UPDATE: ###
-# map_link_nepa description and value
--%>
-<span>NEPA Map Link: </span>	
-<%= @map.map_link_nepa.to_s %>
-</p>
-
-
-
-
   </div>
+
+
 
   <div class="column span-12 last">
   <p>
@@ -86,3 +67,37 @@
     </p>
   </div>
 
+
+
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added new div for nepa data (type, link, document number, etc.)
+### ------------------------------------------------------------------------------------------------------------------------ ###
+-%>
+<div class="column span-12">
+
+	<p>
+		<span>NEPA</span>
+	</p>
+
+	<p>
+		<span>Map Type: </span>	
+		<%= @map.map_type_nepa.to_s %>
+	</p>
+
+	<p>
+		<span>Link: </span>	
+		<%= @map.map_link_nepa.to_s %>
+	</p>
+
+	<% if @map.project_map? -%>
+		<% if @map.project_map? -%>
+			<p><span>nepa document number:&nbsp;</span> <%= @map.nepa_document.document_no %></p>
+			<p><span>Milestone 1 (October 1, 2014):&nbsp;</span> demo 1</p>
+			<p><span>Milestone 2 (November 1, 2014):&nbsp;</span> demo 2</p>
+			<p><span>Milestone 3 (December 1, 2014):&nbsp;</span> demo 3</p>
+			<p><span>Milestone 4 (December 23, 2014):&nbsp;</span> ship</p>
+		<% end -%>
+	<% end -%>
+
+</div>
