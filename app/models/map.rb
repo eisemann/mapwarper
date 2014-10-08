@@ -26,7 +26,8 @@ class Map < ActiveRecord::Base
 # "has_many, has_one and belongs_to associations support the :dependent option."
 # "This allows you to specify that associated records should be deleted when the owner is deleted."
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-has_one :nepa_document, dependent: :destroy
+has_one :nepa_document#, dependent: :destroy #commented for testing
+accepts_nested_attributes_for :nepa_document
 
 
   acts_as_taggable

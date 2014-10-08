@@ -672,19 +672,16 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
     render :text =>  sta
   end
 
+
+
   def show
 
     @current_tab = "show"
     @selected_tab = 0
     @disabled_tabs =[]
     @map = Map.find(params[:id])
-
-
-#logger.debug "[BWE] map_link_nepa " + @map.map_link_nepa
-
-
-
     @html_title = "Viewing Map "+@map.id.to_s
+
 
     if @map.status.nil? || @map.status == :unloaded
       @mapstatus = "unloaded"
@@ -707,13 +704,11 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
         render :layout => "tab_container"
       else
         respond_to do |format|
-          format.html #
-          format.kml {render :action => "show_kml", :layout => false}
-          format.rss {render :action=> 'show'}
-           format.xml {render :xml => @map.to_xml(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid])
-}
-           format.json {render :json =>{:stat => "ok", :items => @map.to_a}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]), :callback => params[:callback]
-}
+           format.html #
+           format.kml {render :action => "show_kml", :layout => false}
+           format.rss {render :action=> 'show'}
+           format.xml {render :xml => @map.to_xml(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid])}
+           format.json {render :json =>{:stat => "ok", :items => @map.to_a}.to_json(:except => [:content_type, :size, :bbox_geom, :uuid, :parent_uuid, :filename, :parent_id,  :map, :thumbnail, :rough_centroid]), :callback => params[:callback]}
         end
       end
       return #stop doing anything more

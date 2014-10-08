@@ -14,72 +14,33 @@
       <%= f.text_field :tag_list %>
     </p>
 
+	<p>
+	<%= 
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	### BWE UPDATE - added span element
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	-%>
+	<span>Map Type:&nbsp;</span>	
 
+	<%= 
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	### BWE UPDATE - removed original code
+	# initial code defaults to :is_map even if another is selected (seems like a little bug)
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	# f.select(:map_type, Map.map_type_hash, :selected=>:is_map) 
+	-%>
 
-<p>
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - added span element
-### ------------------------------------------------------------------------------------------------------------------------ ###
--%>
-<span>Map Type: </span>	
-
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - removed original code
-# initial code defaults to :is_map even if another is selected (seems like a little bug)
-### ------------------------------------------------------------------------------------------------------------------------ ###
-# f.select(:map_type, Map.map_type_hash, :selected=>:is_map) 
--%>
-
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - altered original code
-# by default f.select uses the DB value (new) or first value (new) to select
-### ------------------------------------------------------------------------------------------------------------------------ ###
-f.select(:map_type, Map.map_type_hash) 
--%>
-</p>
-
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - added map_type_nepa description and control
-### ------------------------------------------------------------------------------------------------------------------------ ###
--%>
-<p>
-<span>NEPA Map Type: </span> 
-<%= 
-f.select(:map_type_nepa, Map.map_type_nepa_hash) 
--%>
-</p>
-
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - added project map data
-### ------------------------------------------------------------------------------------------------------------------------ ###
--%>
-<% if @map.project_map? -%>
-<span>TODO: show nepa project data controls</span>
-<% end -%>
-
-
-
-<%= 
-### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - added map_link_nepa description and control
-### ------------------------------------------------------------------------------------------------------------------------ ###
--%>
-<p>
-<span>NEPA Map Link: </span>	
-<%= f.text_field :map_link_nepa %>
-</p>
-
-
-
-
+	<%= 
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	### BWE UPDATE - altered original code
+	# by default f.select uses the DB value (new) or first value (new) to select
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	f.select(:map_type, Map.map_type_hash) 
+	-%>
+	</p>
   </div>
 
-  <div class="column span-12 last">
+  <div class="column span-12">
      <p>
       <b>Subject Area</b><span class="tiny-text">(optional)</span><br />
       <%= f.text_field :subject_area %>
@@ -146,6 +107,41 @@ f.select(:map_type_nepa, Map.map_type_nepa_hash)
     </p>
 
   </div>
+
+
+
+<%= 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE UPDATE - added new div for nepa data (type, link, document number, etc.)
+### ------------------------------------------------------------------------------------------------------------------------ ###
+-%>
+<div class="column span-12 last">
+	<p><span>NEPA</span></p>
+
+	<p><span>NEPA Map Type:&nbsp;</span><%= f.select(:map_type_nepa, Map.map_type_nepa_hash) -%> </p>
+
+	<p><span>NEPA Map Link:&nbsp;</span><%= f.text_field :map_link_nepa %></p>
+
+	<% if @map.project_map? -%>
+		<% if !@map.nepa_document.nil? -%>
+
+			<% 
+#f.fields_for @map.nepa_document, index: @map.nepa_document.id do |nd_form|
+f.fields_for :nepa_document do |nd_form|  
+%>
+
+<%= nd_form.text_field :document_no %>
+
+			<% end %>
+
+
+		<% end %>
+	<% end %>
+
+
+</div>
+
+
 
   <div class="column span-24">
     <%- if defined?(page)  && page =~ /new/ -%>

@@ -76,28 +76,20 @@
 -%>
 <div class="column span-12">
 
-	<p>
-		<span>NEPA</span>
-	</p>
+	<p><span>NEPA</span></p>
 
-	<p>
-		<span>Map Type: </span>	
-		<%= @map.map_type_nepa.to_s %>
-	</p>
+	<p><span>Map Type:&nbsp;</span><%= @map.map_type_nepa.to_s %></p>
 
-	<p>
-		<span>Link: </span>	
-		<%= @map.map_link_nepa.to_s %>
-	</p>
+	<p><span>Link:&nbsp;</span><%= @map.map_link_nepa.to_s %></p>
 
 	<% if @map.project_map? -%>
-		<% if @map.project_map? -%>
+		<% if !@map.nepa_document.nil? -%>
 			<p><span>nepa document number:&nbsp;</span> <%= @map.nepa_document.document_no %></p>
+
 			<p><span>Milestone 1 (October 1, 2014):&nbsp;</span> demo 1</p>
 			<p><span>Milestone 2 (November 1, 2014):&nbsp;</span> demo 2</p>
 			<p><span>Milestone 3 (December 1, 2014):&nbsp;</span> demo 3</p>
 			<p><span>Milestone 4 (December 23, 2014):&nbsp;</span> ship</p>
 		<% end -%>
 	<% end -%>
-
 </div>
