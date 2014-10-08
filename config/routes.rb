@@ -7,6 +7,15 @@ ActionController::Routing::Routes.draw do |map|
   map.authorize '/oauth/authorize', :controller => 'oauth', :action => 'authorize'
   map.oauth '/oauth', :controller => 'oauth', :action => 'index'
 
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  nepa map type routes
+### ------------------------------------------------------------------------------------------------------------------------ ###
+map.connect '/maps/project', :controller => 'maps', :action => 'nepaproject'
+map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
+
+
+
   map.root :controller => "home", :action => "index"
   
   map.user_activity '/users/:id/activity', :controller => 'audits', :action => 'for_user'
@@ -54,6 +63,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.resources :users, :has_many => :user_maps,
   map.force_activate '/force_activate/:id', :controller => 'users', :action => 'force_activate', :conditions =>{:method => :put}
   map.disable_and_reset '/disable_and_reset/:id', :controller => 'users', :action => 'disable_and_reset', :conditions => {:method => :put}
+
   map.resources :users, :member => {:enable => :put, :disable => :put } do |users|
     users.resource :user_account
     users.resources :roles
@@ -89,6 +99,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/maps/geosearch', :controller => 'maps', :action => 'geosearch'
   map.connect '/maps/geo', :controller => 'maps', :action => 'geo'
 
+
+
+
   map.map_tag '/maps/tag/:id', :controller => 'maps', :action => 'tag', :requirements => { :id => %r([^/;,?]+) }
 
   map.connect '/maps/:id/gcps.:format', :controller => 'maps', :action => 'gcps'
@@ -121,9 +134,15 @@ ActionController::Routing::Routes.draw do |map|
   map.destroy_group_user '/groups/:group_id/users/destroy/:id', :controller => 'memberships', :action => 'destroy', :conditions => { :method => :delete}
  
   map.group_users '/groups/:group_id/users', :controller => 'users', :action => 'index_for_group'
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE note:  :controller => 'mapss' seems erroneous (extraneous 's' in 'mapss'
+### ------------------------------------------------------------------------------------------------------------------------ ###
   map.group_maps '/groups/:group_id/maps', :controller => 'mapss', :action => 'index_for_map'
 
   map.resources :imports, :member => {:maps => :get, :start => :get, :status => :get }
+
+
+
  
   
   # The priority is based upon order of creation: first created -> highest priority.
