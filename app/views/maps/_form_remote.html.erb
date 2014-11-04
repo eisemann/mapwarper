@@ -123,19 +123,11 @@
 	<p><span>NEPA Map Link:&nbsp;</span><%= f.text_field :map_link_nepa %></p>
 
 	<% if @map.project_map? -%>
-		<% if !@map.nepa_document.nil? -%>
 
-			<% 
-#f.fields_for @map.nepa_document, index: @map.nepa_document.id do |nd_form|
-f.fields_for :nepa_document do |nd_form|  
-%>
-
-<%= nd_form.text_field :document_no %>
-
-			<% end %>
-
-
+		<% f.fields_for :nepa_document do |nd_form| %>
+			<p><span>Document No.:&nbsp;</span><%= nd_form.text_field :document_no %></p>
 		<% end %>
+
 	<% end %>
 
 

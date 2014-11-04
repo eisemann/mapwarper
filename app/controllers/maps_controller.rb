@@ -5,6 +5,9 @@ class MapsController < ApplicationController
  :warp_align, :mask_map, :delete_mask, :save_mask, :save_mask_and_warp, :set_rough_state, :set_rough_centroid ]
   before_filter :check_administrator_role, :only => [:publish]
 
+
+after_filter :init_nepa_document
+
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added :nepaproject, :nepareference exclusions to before_filter :find_map_if_available
 ### ------------------------------------------------------------------------------------------------------------------------ ###
@@ -608,6 +611,8 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
     @selected_tab = 1
     @html_title = "Editing Map #{@map.title} on"
     choose_layout_if_ajax
+
+
     respond_to do |format|
       format.html {} #{ render :layout =>'application' }  # new.html.erb
       format.xml  { render :xml => @map }
@@ -619,6 +624,8 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
   def update
     #@map = Map.find(params[:id])
     
+:init_nepa_document
+
     if @map.update_attributes(params[:map])
       flash.now[:notice] = 'Map was successfully updated.'
     else
@@ -1202,5 +1209,15 @@ end
     end
   end
 
+
+  def init_nepa_document
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	# BWE update: 
+	### ------------------------------------------------------------------------------------------------------------------------ ###
+	if @map.project_map? and @map.nepa_document.nil?
+		@map.nepa_document = NepaDocument.new
+		#@map.nepa_document.save
+	end
+  end
 
 end
