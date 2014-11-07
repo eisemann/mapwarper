@@ -6,8 +6,6 @@ class MapsController < ApplicationController
   before_filter :check_administrator_role, :only => [:publish]
 
 
-after_filter :init_nepa_document
-
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE update - added :nepaproject, :nepareference exclusions to before_filter :find_map_if_available
 ### ------------------------------------------------------------------------------------------------------------------------ ###
@@ -612,6 +610,10 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
     @html_title = "Editing Map #{@map.title} on"
     choose_layout_if_ajax
 
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added init_nepa_document
+### ------------------------------------------------------------------------------------------------------------------------ ###
+init_nepa_document
 
     respond_to do |format|
       format.html {} #{ render :layout =>'application' }  # new.html.erb
@@ -624,7 +626,10 @@ logger.debug "[BWE] nepaproject post get maps.  @maps.total_entries = " + @maps.
   def update
     #@map = Map.find(params[:id])
     
-:init_nepa_document
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added init_nepa_document
+### ------------------------------------------------------------------------------------------------------------------------ ###
+init_nepa_document
 
     if @map.update_attributes(params[:map])
       flash.now[:notice] = 'Map was successfully updated.'
@@ -1210,10 +1215,12 @@ end
   end
 
 
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added init_nepa_document
+# If the current map is a nepa project map, initialize the NepaDocument object (has_one association)
+### ------------------------------------------------------------------------------------------------------------------------ ###
   def init_nepa_document
-	### ------------------------------------------------------------------------------------------------------------------------ ###
-	# BWE update: 
-	### ------------------------------------------------------------------------------------------------------------------------ ###
 	if @map.project_map? and @map.nepa_document.nil?
 		@map.nepa_document = NepaDocument.new
 		#@map.nepa_document.save
