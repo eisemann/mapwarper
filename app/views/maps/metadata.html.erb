@@ -82,14 +82,7 @@
 
 	<p><span>Link:&nbsp;</span><%= @map.map_link_nepa.to_s %></p>
 
-	<% if @map.project_map? -%>
-		<% if !@map.nepa_document.nil? -%>
-			<p><span>nepa document number:&nbsp;</span> <%= @map.nepa_document.document_no %></p>
-
-			<p><span>Milestone 1 (October 1, 2014):&nbsp;</span> demo 1</p>
-			<p><span>Milestone 2 (November 1, 2014):&nbsp;</span> demo 2</p>
-			<p><span>Milestone 3 (December 1, 2014):&nbsp;</span> demo 3</p>
-			<p><span>Milestone 4 (December 23, 2014):&nbsp;</span> ship</p>
-		<% end -%>
+	<% if @map.project_map? and !@map.nepa_document.nil? -%>
+		<td><%= link_to "View NEPA Document: "+@map.nepa_document.document_no, @map.nepa_document %></td>
 	<% end -%>
 </div>

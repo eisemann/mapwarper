@@ -1,0 +1,70 @@
+<h2>Listing NEPA Milestones</h2>
+
+
+<table id="map_table" cellpadding="3">
+	<thead>
+		<tr>
+			<th>Milestone ID</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+
+	<tbody id="results">
+		<% @nepa_milestones.each do |nepa_milestone| %>
+			<tr>
+				<td><%= nepa_milestone.id %></td>
+				<td><%= nepa_milestone.name %></td>
+				<td><%= nepa_milestone.description %></td>
+
+				<td>
+					<%= link_to 'View Entire Milestone', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;
+					<%= link_to 'Edit', edit_nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;
+					<%= 
+#link_to 'Delete', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone), :confirm => 'Are you sure?', :method => :destroy
+#link_to 'Destroy', nepa_document_nepa_milestones_path(nepa_milestone), :confirm => 'Are you sure?', :method => :destroy
+#link_to 'Delete', nepa_document_nepa_milestones_path(@nepa_document), :confirm => 'Are you sure?', :method => :destroy
+#link_to 'Destroy', nepa_document_nepa_milestones_path(@nepa_document, nepa_milestone.id), :method => :destroy
+#link_to 'Destroy', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone.id), :method => :destroy
+#link_to 'Destroy', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document_id, nepa_milestone.id), :method => :destroy
+
+link_to 'Delete', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document_id, nepa_milestone.id), :method => :delete
+
+					%>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br />
+
+<%= link_to 'New nepa_milestone', new_nepa_document_nepa_milestone_path %>
+
+<!--
+                   nepa_documents GET    /nepa_documents(.:format)                                            {:controller=>"nepa_documents", :action=>"index"}
+                                  POST   /nepa_documents(.:format)                                            {:controller=>"nepa_documents", :action=>"create"}
+                new_nepa_document GET    /nepa_documents/new(.:format)                                        {:controller=>"nepa_documents", :action=>"new"}
+               edit_nepa_document GET    /nepa_documents/:id/edit(.:format)                                   {:controller=>"nepa_documents", :action=>"edit"}
+                    nepa_document GET    /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"show"}
+                                  PUT    /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"update"}
+                                  DELETE /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"destroy"}
+
+    nepa_document_nepa_milestones GET    /nepa_documents/:nepa_document_id/nepa_milestones(.:format)          {:controller=>"nepa_milestones", :action=>"index"}
+                                  POST   /nepa_documents/:nepa_document_id/nepa_milestones(.:format)          {:controller=>"nepa_milestones", :action=>"create"}
+ new_nepa_document_nepa_milestone GET    /nepa_documents/:nepa_document_id/nepa_milestones/new(.:format)      {:controller=>"nepa_milestones", :action=>"new"}
+edit_nepa_document_nepa_milestone GET    /nepa_documents/:nepa_document_id/nepa_milestones/:id/edit(.:format) {:controller=>"nepa_milestones", :action=>"edit"}
+     nepa_document_nepa_milestone GET    /nepa_documents/:nepa_document_id/nepa_milestones/:id(.:format)      {:controller=>"nepa_milestones", :action=>"show"}
+                                  PUT    /nepa_documents/:nepa_document_id/nepa_milestones/:id(.:format)      {:controller=>"nepa_milestones", :action=>"update"}
+                                  DELETE /nepa_documents/:nepa_document_id/nepa_milestones/:id(.:format)      {:controller=>"nepa_milestones", :action=>"destroy"}
+                                  GET    /nepa_documents(.:format)                                            {:controller=>"nepa_documents", :action=>"index"}
+                                  POST   /nepa_documents(.:format)                                            {:controller=>"nepa_documents", :action=>"create"}
+                                  GET    /nepa_documents/new(.:format)                                        {:controller=>"nepa_documents", :action=>"new"}
+                                  GET    /nepa_documents/:id/edit(.:format)                                   {:controller=>"nepa_documents", :action=>"edit"}
+                                  GET    /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"show"}
+                                  PUT    /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"update"}
+                                  DELETE /nepa_documents/:id(.:format)                                        {:controller=>"nepa_documents", :action=>"destroy"}
+
+-->
+

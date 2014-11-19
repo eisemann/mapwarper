@@ -112,7 +112,7 @@
 
 <%= 
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE UPDATE - added new div for nepa data (type, link, document number, etc.)
+### BWE UPDATE - added new div for nepa data (type, link, etc.)
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 -%>
 <div class="column span-12 last">
@@ -122,13 +122,16 @@
 
 	<p><span>NEPA Map Link:&nbsp;</span><%= f.text_field :map_link_nepa %></p>
 
-	<% if @map.project_map? -%>
 
-		<% f.fields_for :nepa_document do |nd_form| %>
-			<p><span>Document No.:&nbsp;</span><%= nd_form.text_field :document_no %></p>
-		<% end %>
-
+	<%- if @map.project_map? and not @map.nepa_document.nil? -%>
+		<%= link_to 'Edit NEPA Document', edit_nepa_document_path(@map.nepa_document.id) %>
 	<% end %>
+
+<% if false and @map.project_map? -%>
+	<% f.fields_for :nepa_document do |nd_form| %>
+		<p><span>Document No.:&nbsp;</span><%= nd_form.text_field :document_no %></p>
+	<% end %>
+<% end %>
 
 
 </div>

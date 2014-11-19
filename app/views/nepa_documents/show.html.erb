@@ -1,0 +1,49 @@
+<h2>Viewing NEPA Document</h2>
+
+<table id="map_table" cellpadding="3">
+	<tr><td>doctype_cd:</td><td><%= @nepa_document.doctype_cd %></td></tr>
+	<tr><td>Document No.:</td><td><%= @nepa_document.document_no %></td></tr>
+	<tr><td>document_no_publishedas:</td><td><%= @nepa_document.document_no_publishedas %></td></tr>
+	<tr><td>document_no_adopted:</td><td><%= @nepa_document.document_no_adopted %></td></tr>
+	<tr><td>nepa_phase_id:</td><td><%= @nepa_document.nepa_phase_id %></td></tr>
+
+	<!--
+	<tr><td>Document_Id</td><td>...</td></tr>
+	<tr><td>DocType_cd</td><td>...</td></tr>
+	<tr><td>Document_No</td><td>...</td></tr>
+	<tr><td>Document_No_PublishedAs</td><td>...</td></tr>
+	<tr><td>NEPA_Phase_Id</td><td>...</td></tr>
+	-->
+	<tr><td>Title</td><td>...</td></tr>
+	<tr><td>ReviewType_Id</td><td>...</td></tr>
+	<tr><td>Site_Id</td><td>...</td></tr>
+	<tr><td>Program_Id</td><td>...</td></tr>
+	<tr><td>FieldOffice_Id</td><td>...</td></tr>
+	<tr><td>Is_DOE_wide_contract</td><td>...</td></tr>
+	<tr><td>Is_adopted</td><td>...</td></tr>
+	<tr><td>IntendedToBeAdopted</td><td>...</td></tr>
+	<tr><td>Total_NEPA_cost</td><td>...</td></tr>
+	<tr><td>ApplicantPays_cost</td><td>...</td></tr>
+	<tr><td>ProducedInHouse</td><td>...</td></tr>
+	<tr><td>Months_complete</td><td>...</td></tr>
+	<tr><td>Comments</td><td>...</td></tr>
+	<tr><td>Entry_dt</td><td>...</td></tr>
+	<tr><td>Verified</td><td>...</td></tr>
+	<tr><td>Weblink</td><td>...</td></tr>
+	<tr><td>Is_In_DOE_HQ_Archive_Library</td><td>...</td></tr>
+	<tr><td>Is_In_DOE_HQ_Archive_Library_Incomplete</td><td>...</td></tr>
+	<tr><td>CoverDate</td><td>...</td></tr>
+	<tr><td>Publish_dt</td><td>...</td></tr>
+	<tr><td>MitigationActionPlan</td><td>...</td></tr>
+	<tr><td>DocumentStartDate</td><td>...</td></tr>
+	<tr><td>DocumentEndDate</td><td>...</td></tr>
+	<tr><td>contractor</td><td>...</td></tr>
+	<tr><td>Cancel_dt</td><td>...</td></tr>
+
+</table>
+
+<p><%= link_to 'Edit this NEPA Document', edit_nepa_document_path(@nepa_document) %></td></tr>
+<p><%= link_to 'View Associated Map', map_path(@nepa_document.map_id) %></td></tr>
+
+<% #= link_to 'Show', @nepa_document %> |
+<% #= link_to 'Back', nepa_documents_path %>

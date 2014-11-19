@@ -30,6 +30,16 @@
 
 
     <li><%= link_to_unless_current("Upload Map", new_map_path) { "<span>Upload Map</span>" } %></li>
+
+<%=
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - added Browse NEPA Documents
+### ------------------------------------------------------------------------------------------------------------------------ ###
+%>
+<li><%= link_to_unless_current("NEPA Documents", :controller => 'nepa_documents', :action=>'index') { "<span>NEPA Documents</span>" } %></li>
+
+
+
     <li><%= link_to_unless_current("Browse All Layers",  layers_path) { "<span>Browse All Layers</span>" } %></li>
     <li><%= link_to_unless_current("Add Layer", new_layer_path) { "<span>Add Layer</span>" } %></li>
 

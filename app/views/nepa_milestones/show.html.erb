@@ -1,0 +1,31 @@
+<h2>Viewing Entire Milestone</h2>
+
+<table id="map_table" cellpadding="3">
+	<tr><td>name</td><td><%= @nepa_milestone.name %></td></tr>
+	<tr><td>description</td><td><%= @nepa_milestone.description %></td></tr>
+	
+	<tr><td>Milestone_Unique_Id</td><td>...</td></tr>
+	<tr><td>Document_Id</td><td>...</td></tr>
+	<tr><td>Milestone ID</td><td>...</td></tr>
+	<tr><td>Actual Start Date</td><td>...</td></tr>
+	<tr><td>Actual Completion Date</td><td>...</td></tr>
+	<tr><td>Extension</td><td>...</td></tr>
+	<tr><td>FR Date</td><td>...</td></tr>
+	<tr><td>FR Number</td><td>...</td></tr>
+	<tr><td>Agency_Id</td><td>...</td></tr>
+	<tr><td>URL</td><td>...</td></tr>
+	<tr><td>Accomplished</td><td>...</td></tr>
+	<tr><td>Projected</td><td>...</td></tr>
+	<tr><td>NextMilestone_StatusChart</td><td>...</td></tr>
+	<tr><td>EstimatedStartDate</td><td>...</td></tr>
+	<tr><td>MilestoneComments</td><td>...</td></tr>
+	<tr><td>Created</td><td>...</td></tr>
+	<tr><td>Weblink_Secondary</td><td>...</td></tr>
+	<tr><td>SA_Approved_Id</td><td>...</td></tr>
+	<tr><td>EPA_Rating_Id</td><td>...</td></tr>
+</table>
+
+<p>
+<%= link_to 'Edit', edit_nepa_document_nepa_milestone_path(@nepa_document, @nepa_milestone)%> |
+<%= link_to 'Back to Viewing all Milestones', nepa_document_nepa_milestones_path %>
+</p>

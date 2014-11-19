@@ -1,0 +1,16 @@
+<h2>New nepa_milestone</h2>
+
+<% form_for(@nepa_milestone, :url => nepa_document_nepa_milestones_path) do |f| %>
+	<%= f.error_messages %>
+
+	<table id="map_table" cellpadding="3">
+		<tr><td>name:</td><td><%= f.text_field :name %></td></tr>
+		<tr><td>description:</td><td><%= f.text_field :description %></td></tr>
+	</table>
+
+	<p>
+	<%= f.submit 'Create' %>
+	</p>
+<% end %>
+
+<%= link_to 'Back', nepa_document_nepa_milestones_path %>

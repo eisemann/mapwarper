@@ -1221,8 +1221,13 @@ end
 # If the current map is a nepa project map, initialize the NepaDocument object (has_one association)
 ### ------------------------------------------------------------------------------------------------------------------------ ###
   def init_nepa_document
-	if @map.project_map? and @map.nepa_document.nil?
+
+	logger.debug "[ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ] init_nepa_document"
+
+	# if @map.project_map? and @map.nepa_document.nil?
+	if @map.nepa_document.nil?
 		@map.nepa_document = NepaDocument.new
+		logger.debug "[ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ][ BWE DEBUG ] NepaDocument.new"
 		#@map.nepa_document.save
 	end
   end

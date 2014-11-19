@@ -1,0 +1,34 @@
+<h2>Listing NEPA Documents</h2>
+
+<table id="map_table" cellpadding="3">
+	<thead>
+		<tr>
+			<th>NEPA Document ID</th>
+			<th>NEPA Document No.</th>
+			<th>View NEPA Document</th>
+			<th>View NEPA Milestones</th>
+			<th>View Associated Map</th>
+			<th>Edit NEPA Document</th>
+		</tr>
+	</thead>
+
+	<tbody id="results">
+		<% @nepa_documents.each do |nepa_document| %>
+			<tr>
+				<td><%= nepa_document.id %></td>
+				<td><%= nepa_document.document_no %></td>
+				<td><%= link_to "View NEPA Document", nepa_document %></td>
+				<td><%= link_to "View NEPA Milestones", nepa_document_nepa_milestones_path(nepa_document) %></td>
+				<td><%= link_to 'View Associated Map', map_path(nepa_document.map_id) %></td>
+				<td>
+					<%= link_to 'Edit NEPA Document', edit_nepa_document_path(nepa_document) %>
+					<% #= link_to 'Destroy', nepa_document, :confirm => 'Are you sure?', :method => :delete %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br />
+
+<% #= link_to 'New nepa_document', new_nepa_document_path %>
