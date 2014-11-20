@@ -62,7 +62,7 @@ function warpedinit(){
 ### BWE update - added google maps (googleMaps,googleSat,googleHybrid defined in layers.js)
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 */
-   warpedmap.addLayers([googleMaps,googleSat,googleHybrid]);
+	warpedmap.addLayers([googleMaps,googleSat,googleHybrid]);
 
 
 
