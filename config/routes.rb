@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+
+
+
   map.resources :oauth_clients
 
   map.test_request '/oauth/test_request', :controller => 'oauth', :action => 'test_request'
@@ -13,6 +16,24 @@ ActionController::Routing::Routes.draw do |map|
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 map.connect '/maps/project', :controller => 'maps', :action => 'nepaproject'
 map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  nepa documents routes
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  map.resources :nepa_documents
+#map.connect '/maps/:map_id/nepa_document', :controller => 'nepa_documents', :action => 'show'
+  map.assign_nepa_document '/nepa_documents/:nepa_document_id/assign', :controller => 'nepa_documents', :action => 'assign'
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  nepa milestones routes
+### ------------------------------------------------------------------------------------------------------------------------ ###
+#  map.resources :nepa_milestones
+#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones', :controller => 'nepa_milestones', :action => 'list'
+#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones/:id', :controller => 'nepa_milestones', :action => 'show'
+#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones/new', :controller => 'nepa_milestones', :action => 'new'
+  map.resources :nepa_documents  do |nd|
+    nd.resources :nepa_milestones
+  end
 
 
 
@@ -98,8 +119,6 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
 
   map.connect '/maps/geosearch', :controller => 'maps', :action => 'geosearch'
   map.connect '/maps/geo', :controller => 'maps', :action => 'geo'
-
-
 
 
   map.map_tag '/maps/tag/:id', :controller => 'maps', :action => 'tag', :requirements => { :id => %r([^/;,?]+) }
