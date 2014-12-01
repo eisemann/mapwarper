@@ -441,6 +441,7 @@ end
       end
 
       ows.setParameter("VeRsIoN","1.1.1")
+
       ows.setParameter("STYLES", "")
       ows.setParameter("LAYERS", "image")
       #ows.setParameter("COVERAGE", "image")
@@ -597,6 +598,7 @@ end
      params[:format] = "image/png"
      params[:service] = "WMS"
      params[:version] = "1.1.1"
+     
      params[:request] = "GetMap"
      params[:srs] = "EPSG:900913"
      params[:width] = "256"

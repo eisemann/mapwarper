@@ -1,28 +1,25 @@
 <h2>Viewing Entire Milestone</h2>
 
 <table id="map_table" cellpadding="3">
-	<tr><td>name</td><td><%= @nepa_milestone.name %></td></tr>
-	<tr><td>description</td><td><%= @nepa_milestone.description %></td></tr>
-	
-	<tr><td>Milestone_Unique_Id</td><td>...</td></tr>
-	<tr><td>Document_Id</td><td>...</td></tr>
-	<tr><td>Milestone ID</td><td>...</td></tr>
-	<tr><td>Actual Start Date</td><td>...</td></tr>
-	<tr><td>Actual Completion Date</td><td>...</td></tr>
-	<tr><td>Extension</td><td>...</td></tr>
-	<tr><td>FR Date</td><td>...</td></tr>
-	<tr><td>FR Number</td><td>...</td></tr>
-	<tr><td>Agency_Id</td><td>...</td></tr>
-	<tr><td>URL</td><td>...</td></tr>
-	<tr><td>Accomplished</td><td>...</td></tr>
-	<tr><td>Projected</td><td>...</td></tr>
-	<tr><td>NextMilestone_StatusChart</td><td>...</td></tr>
-	<tr><td>EstimatedStartDate</td><td>...</td></tr>
-	<tr><td>MilestoneComments</td><td>...</td></tr>
-	<tr><td>Created</td><td>...</td></tr>
-	<tr><td>Weblink_Secondary</td><td>...</td></tr>
-	<tr><td>SA_Approved_Id</td><td>...</td></tr>
-	<tr><td>EPA_Rating_Id</td><td>...</td></tr>
+<!--	<tr><td>Milestone_Unique_Id</td><td><%= @nepa_milestone.milestone_unique_id %></td></tr> -->
+<!--	<tr><td>Document_Id_initial</td><td><%= @nepa_milestone.document_id_initial %></td></tr> -->
+	<tr><td>Milestone Type</td><td><%= @nepa_milestone.milestone_type %></td></tr>
+	<tr><td>Actual Start Date</td><td><%= @nepa_milestone.actual_start_date %></td></tr>
+	<tr><td>Actual Completion Date</td><td><%= @nepa_milestone.actual_completion_date %></td></tr>
+	<tr><td>Extension</td><td><%= @nepa_milestone.extension %></td></tr>
+	<tr><td>FR Date</td><td><%= @nepa_milestone.fr_date %></td></tr>
+	<tr><td>FR Number</td><td><%= @nepa_milestone.fr_number %></td></tr>
+	<tr><td>Agency_Id</td><td><%= @nepa_milestone.agency_id %></td></tr>
+	<tr><td>URL</td><td><%= @nepa_milestone.url %></td></tr>
+	<tr><td>Accomplished</td><td><%= @nepa_milestone.accomplished %></td></tr>
+	<tr><td>Projected</td><td><%= @nepa_milestone.projected %></td></tr>
+	<tr><td>next_milestone_status_chart</td><td><%= @nepa_milestone.next_milestone_status_chart %></td></tr>
+	<tr><td>EstimatedStartDate</td><td><%= @nepa_milestone.estimated_start_date %></td></tr>
+	<tr><td>milestone_comments</td><td><%= @nepa_milestone.milestone_comments %></td></tr>
+	<tr><td>Created</td><td><%= @nepa_milestone.created_initial %></td></tr>
+	<tr><td>Weblink_Secondary</td><td><%= @nepa_milestone.web_link_secondary %></td></tr>
+	<tr><td>SA_Approved_Id</td><td><%= @nepa_milestone.sa_approved_id %></td></tr>
+	<tr><td>EPA_Rating_Id</td><td><%= @nepa_milestone.epa_rating_id %></td></tr>
 </table>
 
 <p>

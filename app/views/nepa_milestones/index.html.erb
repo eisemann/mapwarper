@@ -4,34 +4,26 @@
 <table id="map_table" cellpadding="3">
 	<thead>
 		<tr>
-			<th>Milestone ID</th>
-			<th>Name</th>
-			<th>Description</th>
-			<th>Actions</th>
+			<th>Milestone Type</th>
+			<th>Actual Start Date</th>
+			<th>Actual Completion Date</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 
 	<tbody id="results">
 		<% @nepa_milestones.each do |nepa_milestone| %>
 			<tr>
-				<td><%= nepa_milestone.id %></td>
-				<td><%= nepa_milestone.name %></td>
-				<td><%= nepa_milestone.description %></td>
+
+				<td><%= nepa_milestone.milestone_type %></td>
+				<td><%= nepa_milestone.actual_start_date %></td>
+				<td><%= nepa_milestone.actual_completion_date %></td>
+
 
 				<td>
-					<%= link_to 'View Entire Milestone', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;
-					<%= link_to 'Edit', edit_nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;
-					<%= 
-#link_to 'Delete', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone), :confirm => 'Are you sure?', :method => :destroy
-#link_to 'Destroy', nepa_document_nepa_milestones_path(nepa_milestone), :confirm => 'Are you sure?', :method => :destroy
-#link_to 'Delete', nepa_document_nepa_milestones_path(@nepa_document), :confirm => 'Are you sure?', :method => :destroy
-#link_to 'Destroy', nepa_document_nepa_milestones_path(@nepa_document, nepa_milestone.id), :method => :destroy
-#link_to 'Destroy', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone.id), :method => :destroy
-#link_to 'Destroy', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document_id, nepa_milestone.id), :method => :destroy
-
-link_to 'Delete', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document_id, nepa_milestone.id), :method => :delete
-
-					%>
+					<%= link_to 'View Entire Milestone', nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;|&nbsp;
+					<%= link_to 'Edit', edit_nepa_document_nepa_milestone_path(@nepa_document, nepa_milestone) %> &nbsp;|&nbsp;
+					<%= link_to 'Delete', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document_id, nepa_milestone.id), :method => :delete %>
 				</td>
 			</tr>
 		<% end %>
@@ -41,6 +33,7 @@ link_to 'Delete', nepa_document_nepa_milestone_path(nepa_milestone.nepa_document
 <br />
 
 <%= link_to 'New nepa_milestone', new_nepa_document_nepa_milestone_path %>
+
 
 <!--
                    nepa_documents GET    /nepa_documents(.:format)                                            {:controller=>"nepa_documents", :action=>"index"}

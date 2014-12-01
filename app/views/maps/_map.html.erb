@@ -22,7 +22,18 @@
       </span>
       <% if !map.public? %><span class="publicprivate">(Not listed)</span><% end-%>
     </div>
+
+
+<% if !@nepa_document_id.nil? %>
+<%= 
+	#link_to "Select Map for NEPA Document", assign_nepa_document_path(@nepa_document_id), :nepa_document_map_id => map.id
+	link_to "Select Map for NEPA Document", :controller => 'nepa_documents', :action =>'assign', :nepa_document_id => @nepa_document_id, :nepa_document_map_id => map.id  
+-%>
+<% else %>
+
+
     <div class="map_links_bigger">
+
       <%= link_to("View Map",map) -%>
       |
       <% if !admin_authorized? && map.published? %>
@@ -52,12 +63,17 @@
       <%if map.warped_or_published?-%> |
         <%= link_to("Download KML", map_url(:id => map, :format=>:kml)) -%>
       <% end -%>
+
     </div>
     <div class="map_links">
       <% if map.source_uri %>
       Links: <%= link_to 'Source / Biblio Ref', map.source_uri  %>
        <% end %>
     </div>
+
+
+<% end %>
+
 
   </td>
   <td>

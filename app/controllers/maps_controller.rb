@@ -283,7 +283,7 @@ if(params.has_key?("view_related"))
 #	else
 #		conditions = conditions + ["map_link_nepa = 'nepa'"]
 	end
-end
+    end
 
 
       if params[:sort_order] && params[:sort_order] == "desc"
@@ -365,6 +365,15 @@ end
    unless @field == "tags"
      
      @field = "title" if @field.nil?
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+# BWE Update: check to see if we are showing the link to assign a nepa document to a map
+### ------------------------------------------------------------------------------------------------------------------------ ###
+if(params.has_key?("nepa") && params.has_key?("doc") && params[:doc].to_i > 0)
+	@nepa_document_id = params[:doc].to_i
+end
+
 
       #we'll use POSIX regular expression for searches    ~*'( |^)robinson([^A-z]|$)' and to strip out brakets etc  ~*'(:punct:|^|)plate 6([^A-z]|$)';
     if @query && @query.strip.length > 0 && @field
@@ -949,7 +958,9 @@ init_nepa_document
           ows.setParameter(key.to_s, ok_params[key.to_s.upcase]) unless ok_params[key.to_s.upcase].nil?
         end
 
-        ows.setParameter("VeRsIoN","1.1.1")
+ows.setParameter("VeRsIoN","1.1.1")
+#ows.setParameter("VeRsIoN","1.3.0")
+
         ows.setParameter("STYLES", "")
         ows.setParameter("LAYERS", "image")
         ows.setParameter("COVERAGE", "image")
@@ -973,6 +984,9 @@ init_nepa_document
         else #show the warped map
           raster.data = @map.warped_filename
         end
+
+#from http://mapserver.org/ogc/wms_server.html#wms-1-3-0-support
+#http://demo.mapserver.org/cgi-bin/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&BBOX=-90,-180,90,180&CRS=EPSG:4326&WIDTH=953&HEIGHT=480&LAYERS=bluemarble,cities&STYLES=,&FORMAT=image/png&DPI=96&TRANSPARENT=true
 
         raster.status = Mapscript::MS_ON
         raster.dump = Mapscript::MS_TRUE
@@ -1009,7 +1023,8 @@ init_nepa_document
      params[:status] = "warped"
      params[:format] = "image/png"
      params[:service] = "WMS"
-     params[:version] = "1.1.1"
+#params[:version] = "1.1.1"
+params[:version] = "1.3.0"
      params[:request] = "GetMap"
      params[:srs] = "EPSG:900913"
      params[:width] = "256"

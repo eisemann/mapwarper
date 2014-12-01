@@ -1,13 +1,32 @@
 <h2>Listing NEPA Documents</h2>
 
+<div id="search-form">
+<% form_tag url_for(:controller => "nepa_documents"), :id=>"searchform",:name=> "searchform", :method => :get do -%>
+	<span>Search</span>
+	<select id="field" name="field">
+		<%= options_for_select([
+			["Document No.", "document_no"], 
+			["Title", "title"], 
+			["Comments", "comments"]], @field)-%>
+	</select>
+	<span>for</span>
+	<%= text_field_tag 'query', @query -%>
+	<input type="submit" value=" Go ">
+<% end -%>
+</div>
+
+<!--<div id="search-sort"><%= render :partial => 'shared/sort' -%></div>-->
+
+<div class="warper_pagination"><div id="search-pagination-top"><%= will_paginate @nepa_documents %></div></div>
+
 <table id="map_table" cellpadding="3">
 	<thead>
 		<tr>
-			<th>NEPA Document ID</th>
 			<th>NEPA Document No.</th>
+			<th>NEPA Document Title</th>
 			<th>View NEPA Document</th>
 			<th>View NEPA Milestones</th>
-			<th>View Associated Map</th>
+			<th>Associated Map</th>
 			<th>Edit NEPA Document</th>
 		</tr>
 	</thead>
@@ -15,11 +34,20 @@
 	<tbody id="results">
 		<% @nepa_documents.each do |nepa_document| %>
 			<tr>
-				<td><%= nepa_document.id %></td>
 				<td><%= nepa_document.document_no %></td>
+				<td><%= nepa_document.title %></td>
 				<td><%= link_to "View NEPA Document", nepa_document %></td>
 				<td><%= link_to "View NEPA Milestones", nepa_document_nepa_milestones_path(nepa_document) %></td>
-				<td><%= link_to 'View Associated Map', map_path(nepa_document.map_id) %></td>
+				<td>
+					<%= 
+						if (nepa_document.map_id) then
+							link_to 'View Associated Map', map_path(nepa_document.map_id)
+						else
+							#link_to "Assign to Map", assign_nepa_document_path(nepa_document)
+							link_to "Assign to Project Map", :controller => 'maps', :action =>'nepaproject', :nepa => "assign", :doc => nepa_document.id
+						end
+					%>
+				</td>
 				<td>
 					<%= link_to 'Edit NEPA Document', edit_nepa_document_path(nepa_document) %>
 					<% #= link_to 'Destroy', nepa_document, :confirm => 'Are you sure?', :method => :delete %>
@@ -28,6 +56,15 @@
 		<% end %>
 	</tbody>
 </table>
+
+  <div class="warper_pagination">
+    <div id="search-pagination-bottom">
+      <%= will_paginate @nepa_documents %>
+      <div class="per_page_select">
+        <%= page_entries_info @nepa_documents %>.&nbsp;<%= select_tag :per_page, options_for_select([10,20,50,100], @per_page.to_i), :onchange => "if(this.value){reload_with_page(this.value)};" %> per page.
+      </div>
+    </div>
+  </div>
 
 <br />
 
