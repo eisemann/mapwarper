@@ -24,19 +24,20 @@
 		<tr>
 			<th>NEPA Document No.</th>
 			<th>NEPA Document Title</th>
-			<th>View NEPA Document</th>
+			
 			<th>View NEPA Milestones</th>
 			<th>Associated Map</th>
-			<th>Edit NEPA Document</th>
+
+			<th>NEPA Document Actions</th>
 		</tr>
 	</thead>
 
 	<tbody id="results">
 		<% @nepa_documents.each do |nepa_document| %>
 			<tr>
-				<td><%= nepa_document.document_no %></td>
+				<td><%= link_to nepa_document.document_no.to_s, nepa_document %></td>
 				<td><%= nepa_document.title %></td>
-				<td><%= link_to "View NEPA Document", nepa_document %></td>
+
 				<td><%= link_to "View NEPA Milestones", nepa_document_nepa_milestones_path(nepa_document) %></td>
 				<td>
 					<%= 
@@ -49,8 +50,8 @@
 					%>
 				</td>
 				<td>
-					<%= link_to 'Edit NEPA Document', edit_nepa_document_path(nepa_document) %>
-					<% #= link_to 'Destroy', nepa_document, :confirm => 'Are you sure?', :method => :delete %>
+					<%= link_to 'Edit', edit_nepa_document_path(nepa_document) %>&nbsp;/&nbsp;
+					<%= link_to 'Destroy', nepa_document, :confirm => 'Are you sure?', :method => :delete %>
 				</td>
 			</tr>
 		<% end %>
@@ -68,4 +69,5 @@
 
 <br />
 
-<% #= link_to 'New nepa_document', new_nepa_document_path %>
+<%= link_to 'New nepa_document', new_nepa_document_path %>
+

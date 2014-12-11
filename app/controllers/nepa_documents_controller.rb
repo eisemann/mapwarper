@@ -1,6 +1,6 @@
 class NepaDocumentsController < ApplicationController
 
-	layout 'application'
+	layout 'application' #change to nepa
 
 
 	helper :sort

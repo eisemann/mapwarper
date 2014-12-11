@@ -1,6 +1,6 @@
 class NepaMilestonesController < ApplicationController
 
-	layout 'application'
+	layout 'nepa'
 
 
 	# GET /nepa_document/:nepa_document_id/nepa_milestones
@@ -8,6 +8,8 @@ class NepaMilestonesController < ApplicationController
 	def index
 		@nepa_document = NepaDocument.find(params[:nepa_document_id])
 		@nepa_milestones = NepaMilestone.all(:conditions => {:nepa_document_id => params[:nepa_document_id]})
+
+		#@nepa_lookup_milestones = NepaLookupMilestone.all()
 
 		respond_to do |format|
 			format.html # index.html.erb
@@ -44,6 +46,8 @@ class NepaMilestonesController < ApplicationController
 	# GET /nepa_document/:nepa_document_id/nepa_milestones/1/edit
 	def edit
 		@nepa_milestone = NepaMilestone.find(params[:id])
+
+		nlmid = @nepa_milestone.nepa_lookup_milestone.id
 	end
 
 	# POST /nepa_document/:nepa_document_id/nepa_milestones

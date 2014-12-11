@@ -15,7 +15,10 @@
 		<% @nepa_milestones.each do |nepa_milestone| %>
 			<tr>
 
-				<td><%= nepa_milestone.milestone_type %></td>
+				<td>
+					<% #= nepa_milestone.milestone_type %>
+					<%= nepa_milestone.nepa_lookup_milestone.milestone %>
+				</td>
 				<td><%= nepa_milestone.actual_start_date %></td>
 				<td><%= nepa_milestone.actual_completion_date %></td>
 
