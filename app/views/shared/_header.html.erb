@@ -13,6 +13,9 @@
   <% if logged_in? %>
     <% if current_user.has_role?("administrator") || current_user.has_role?("super user") %>
       <br />
+
+<%= link_to "NEPA Admin", :controller => "home", :action => "nepa_admin" %>
+
       <%= link_to "All Maps", maps_path %>
       <%= link_to "All Layers", layers_path %>
       <%= link_to "All Activity", activity_url %>

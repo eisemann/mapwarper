@@ -25,6 +25,11 @@ class HomeController < ApplicationController
 
 
 
+def nepa_admin
+end
+
+
+
   def get_news_feeds
   when_fragment_expired 'news_feeds', 1.day.from_now do
     logger.info "getting news feed"
