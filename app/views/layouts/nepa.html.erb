@@ -11,32 +11,43 @@
 		<%= yield :head %>
 
 
-
-<% # BWE DEBUG %>
+<% # BWE DEBUG - boostrap %>
 <% if false %>
-<%= stylesheet_link_tag "openlayers/theme/default/style" %>
-<%= stylesheet_link_tag "ui.all" %>
 <%= stylesheet_link_tag "bootstrap.min" %>
 <%= stylesheet_link_tag "bootstrap-theme.min" %>
 <%= javascript_include_tag "bootstrap.min.js" %>
+<% end %>
 
+
+<% # BWE DEBUG - jQuery datepicker %>
+<% if false %>
+<%= stylesheet_link_tag "jquery-ui-1.11.2.min" %>
+<%= javascript_include_tag "jquery-ui-1.11.2.min.js" %>
 <% end %>
 		
 
 
-<%= stylesheet_link_tag "styles_1" %>
-<%= stylesheet_link_tag "jquery-ui-1.11.2.min" %>
 
 
 <%= javascript_include_tag "jquery-1.11.1.min.js" %>
-<%= javascript_include_tag "jquery-ui-1.11.2.min.js" %>
 
+<%= stylesheet_link_tag "bootstrap.min" %>
+<%= stylesheet_link_tag "bootstrap-theme.min" %>
+<%= javascript_include_tag "bootstrap.min.js" %>
 
+<%= stylesheet_link_tag "datepicker3" %>
+<%= javascript_include_tag "bootstrap-datepicker.js" %>
+
+<%= stylesheet_link_tag "styles_1" %>
 
 
 		<script language="javascript" type="text/javascript">
 			$( document ).ready(function() {
 
+				$(".nepa_datepicker").datepicker({format: "yyyy-mm-dd"});
+
+				/*
+				//jQuery datepicker
 				$(".nepa_datepicker").datepicker({
 					dateFormat: 'yy-mm-dd',
 					changeMonth: true,
@@ -44,6 +55,7 @@
 					showButtonPanel: true,
 					yearRange: "-100:+100"
 				});
+				*/
 
 			});
 		</script>
