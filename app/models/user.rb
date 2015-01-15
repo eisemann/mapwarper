@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
    has_many :my_maps, :dependent => :destroy
    has_many :maps, :through => :my_maps, :uniq => true
    has_many :layers
-  #OAUTH
-   has_many :client_applications
-   has_many :tokens, :class_name => "OauthToken", :order => "authorized_at desc", :include => [:client_application]
+
+
+
 
    validates_presence_of     :login, :email
    validates_presence_of     :password,                   :if => :password_required?
@@ -42,6 +42,29 @@ class User < ActiveRecord::Base
       end
    end
 
+
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  added create_with_omniauth
+### ------------------------------------------------------------------------------------------------------------------------ ###
+def self.create_with_omniauth(auth)
+
+  create! do |user|
+    user.provider = auth["provider"]
+    user.uid = auth["uid"]
+    
+
+	user.login = auth["provider"] + "-" + auth["uid"]
+	#user.email = user.login + "@google.com"
+	user.email = auth["info"]["email"]
+	user.enabled = true
+
+  end
+end
+
+
+
     def own_maps
       Map.find(:all, :conditions => ["owner_id = ?", self.id])
     end
@@ -53,6 +76,8 @@ class User < ActiveRecord::Base
     def own_this_layer?(layer)
       Layer.exists?(:id => layer, :user_id => self.id)
     end
+
+
 
    # Finds the user with the corresponding activation code, activates their account and returns the user.
    #
@@ -170,9 +195,15 @@ class User < ActiveRecord::Base
       self.crypted_password = encrypt(password)
    end
 
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  if provider is nil, this is a site login so run the original code
+#			if provider is not nil, password_required is false; consequently, skip password validations
+### ------------------------------------------------------------------------------------------------------------------------ ###
    def password_required?
-      crypted_password.blank? || !password.blank?
+	provider.nil? ? (crypted_password.blank? || !password.blank?) : false
    end
+
 
    def make_activation_code
       self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split(//).sort_by {rand}.join )

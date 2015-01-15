@@ -2,13 +2,14 @@ ActionController::Routing::Routes.draw do |map|
 
 
 
-  map.resources :oauth_clients
 
-  map.test_request '/oauth/test_request', :controller => 'oauth', :action => 'test_request'
-  map.access_token '/oauth/access_token', :controller => 'oauth', :action => 'access_token'
-  map.request_token '/oauth/request_token', :controller => 'oauth', :action => 'request_token'
-  map.authorize '/oauth/authorize', :controller => 'oauth', :action => 'authorize'
-  map.oauth '/oauth', :controller => 'oauth', :action => 'index'
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  nepa lookup tables
+### ------------------------------------------------------------------------------------------------------------------------ ###
+map.resources :nepa_lookup_milestones
+
+
+
 
 
 ### ------------------------------------------------------------------------------------------------------------------------ ###
@@ -21,16 +22,11 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
 ### BWE updates:  nepa documents routes
 ### ------------------------------------------------------------------------------------------------------------------------ ###
   map.resources :nepa_documents
-#map.connect '/maps/:map_id/nepa_document', :controller => 'nepa_documents', :action => 'show'
   map.assign_nepa_document '/nepa_documents/:nepa_document_id/assign', :controller => 'nepa_documents', :action => 'assign'
 
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE updates:  nepa milestones routes
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-#  map.resources :nepa_milestones
-#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones', :controller => 'nepa_milestones', :action => 'list'
-#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones/:id', :controller => 'nepa_milestones', :action => 'show'
-#  map.connect '/nepa_documents/:nepa_document_id/nepa_milestones/new', :controller => 'nepa_milestones', :action => 'new'
   map.resources :nepa_documents  do |nd|
     nd.resources :nepa_milestones
   end
@@ -38,6 +34,9 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
 
 
   map.root :controller => "home", :action => "index"
+
+  map.connect '/nepa_admin', :controller => "home", :action => "nepa_admin"
+
   
   map.user_activity '/users/:id/activity', :controller => 'audits', :action => 'for_user'
   map.formatted_user_activity '/users/:id/activity.:format', :controller => 'audits', :action => 'for_user'
@@ -57,18 +56,20 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
 
   map.connect '/gcp/', :controller => 'gcp', :action => 'index'
   map.connect '/gcp/:id', :controller => 'gcp', :action=> 'show'
-#  map.connect '/gcp/show/:id', :controller=> 'gcp', :action=>'show'
-  #map.connect '/gcps/update/:id', :controller => 'gcp', :action => 'update'
-  #map.connect '/gcps/update_field/:id', :controller => 'gcp', :action => 'update_field'
   map.connect '/gcp/destroy/:id', :controller => 'gcp', :action => 'destroy', :conditions => {:method => :delete}
   map.connect '/gcp/add/:mapid', :controller => 'gcp', :action => 'add'
 
 
   map.my_maps '/users/:user_id/maps', :controller => 'my_maps', :action => 'list'
-  #map.connect '/users/:user_id/maps/new', :controller => 'my_maps', :action => 'new'
-  #map.connect '/users/:user_id/maps/:id', :controller => 'my_maps', :action => 'show'
   map.add_my_map '/users/:user_id/maps/create/:map_id', :controller => 'my_maps', :action => 'create', :conditions => { :method => :post }
   map.destroy_my_map '/users/:user_id/maps/destroy/:map_id', :controller => 'my_maps', :action => 'destroy', :conditions => { :method => :post}
+
+
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  added omniauth callback route
+### ------------------------------------------------------------------------------------------------------------------------ ###
+map.connect '/auth/:provider/callback', :controller => 'sessions', :action => 'create_with_omniauth'
 
 
 
@@ -81,7 +82,6 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
   map.change_password '/change_password',   :controller => 'user_accounts', :action => 'edit'
   map.forgot_password '/forgot_password',   :controller => 'passwords', :action => 'new'
   map.reset_password '/reset_password/:id', :controller => 'passwords', :action => 'edit'
-  # map.resources :users, :has_many => :user_maps,
   map.force_activate '/force_activate/:id', :controller => 'users', :action => 'force_activate', :conditions =>{:method => :put}
   map.disable_and_reset '/disable_and_reset/:id', :controller => 'users', :action => 'disable_and_reset', :conditions => {:method => :put}
 
@@ -100,7 +100,6 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
   map.align_map '/maps/align/:id', :controller => 'maps', :action => 'align'
   map.warped_map '/maps/preview/:id', :controller => 'maps', :action => 'warped'
   map.export_map '/maps/export/:id', :controller => 'maps', :action => 'export'
-  #map.map_status '/maps/status/:id', :controller => 'maps', :action => 'status'
   map.map_status '/maps/:id/status', :controller => 'maps', :action => 'status'
   map.metadata_map '/maps/metadata/:id', :controller => 'maps', :action => 'metadata'
 
@@ -154,7 +153,7 @@ map.connect '/maps/reference', :controller => 'maps', :action => 'nepareference'
  
   map.group_users '/groups/:group_id/users', :controller => 'users', :action => 'index_for_group'
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE note:  :controller => 'mapss' seems erroneous (extraneous 's' in 'mapss'
+### BWE note:  :controller => 'mapss' seems erroneous (extraneous 's' in 'mapss')
 ### ------------------------------------------------------------------------------------------------------------------------ ###
   map.group_maps '/groups/:group_id/maps', :controller => 'mapss', :action => 'index_for_map'
 

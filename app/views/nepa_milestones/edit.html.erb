@@ -20,26 +20,28 @@
 			</td></tr>
 
 
-		<tr><td>Actual Start Date</td><td><%= f.text_field :actual_start_date, class: 'nepa_datepicker' %></td></tr>
-		<tr><td>Actual Completion Date</td><td><%= f.text_field :actual_completion_date, class: 'nepa_datepicker' %></td></tr>
-		<tr><td>Extension</td><td><%= f.text_field :extension %></td></tr>
-		<tr><td>FR Date</td><td><%= f.text_field :fr_date, class: 'nepa_datepicker' %></td></tr>
-		<tr><td>FR Number</td><td><%= f.text_field :fr_number %></td></tr>
-		<tr><td>Agency_Id</td><td><%= f.text_field :agency_id %></td></tr>
-		<tr><td>URL</td><td><%= f.text_field :url %></td></tr>
-		<tr><td>Accomplished</td><td><%= f.text_field :accomplished %></td></tr>
-		<tr><td>Projected</td><td><%= f.text_field :projected %></td></tr>
-		<tr><td>next_milestone_status_chart</td><td><%= f.text_field :next_milestone_status_chart %></td></tr>
-		<tr><td>EstimatedStartDate</td><td><%= f.text_field :estimated_start_date %></td></tr>
-		<tr><td>milestone_comments</td><td><%= f.text_field :milestone_comments %></td></tr>
+		<tr><td>Actual Start Date</td><td><%= f.text_field :actual_start_date, class: 'nepa_datepicker form-control' %></td></tr>
+		<tr><td>Actual Completion Date</td><td><%= f.text_field :actual_completion_date, class: 'nepa_datepicker form-control' %></td></tr>
+		<tr><td>Extension</td><td><%= f.text_field :extension, class: 'form-control' %></td></tr>
+		<tr><td>FR Date</td><td><%= f.text_field :fr_date, class: 'nepa_datepicker form-control' %></td></tr>
+		<tr><td>FR Number</td><td><%= f.text_field :fr_number, class: 'form-control' %></td></tr>
+		<tr><td>Agency_Id</td><td><%= f.text_field :agency_id, class: 'form-control' %></td></tr>
+		<tr><td>URL</td><td><%= f.text_field :url, class: 'form-control' %></td></tr>
+		<tr><td>Accomplished</td><td><%= f.text_field :accomplished, class: 'form-control' %></td></tr>
+		<tr><td>Projected</td><td><%= f.text_field :projected, class: 'form-control' %></td></tr>
+		<tr><td>next_milestone_status_chart</td><td><%= f.text_field :next_milestone_status_chart, class: 'form-control' %></td></tr>
+		<tr><td>EstimatedStartDate</td><td><%= f.text_field :estimated_start_date, class: 'form-control' %></td></tr>
+		<tr><td>milestone_comments</td><td><%= f.text_field :milestone_comments, class: 'form-control' %></td></tr>
 
 
-		<tr><td>Weblink_Secondary</td><td><%= f.text_field :web_link_secondary %></td></tr>
-		<tr><td>SA_Approved_Id</td><td><%= f.text_field :sa_approved_id %></td></tr>
-		<tr><td>EPA_Rating_Id</td><td><%= f.text_field :epa_rating_id %></td></tr>
+		<tr><td>Weblink_Secondary</td><td><%= f.text_field :web_link_secondary, class: 'form-control' %></td></tr>
+		<tr><td>SA_Approved_Id</td><td><%= f.text_field :sa_approved_id, class: 'form-control' %></td></tr>
+		<tr><td>EPA_Rating_Id</td><td><%= f.text_field :epa_rating_id, class: 'form-control' %></td></tr>
+		
+		<tr><td></td><td><%= f.submit 'Update', class: 'form-control' %></td></tr>
 
 	</table>
-	<p><%= f.submit 'Update' %></p>
+
 <% end %>
 
 <p><%= link_to 'Back to Viewing all Milestones', nepa_document_nepa_milestones_path %></p>

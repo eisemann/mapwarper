@@ -1,8 +1,13 @@
 class MapsController < ApplicationController
    layout 'mapdetail', :only => [:show, :edit, :preview, :warp, :clip, :align, :activity, :warped, :export, :metadata, :comments]
   #before_filter :login_required, :only => [:destroy, :delete]
-  before_filter :login_or_oauth_required, :only => [:new, :create, :edit, :update, :destroy, :delete, :warp, :rectify, :clip, :align,
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE update - change login_or_oauth_required to login_required
+### ------------------------------------------------------------------------------------------------------------------------ ###
+  before_filter :login_required, :only => [:new, :create, :edit, :update, :destroy, :delete, :warp, :rectify, :clip, :align,
  :warp_align, :mask_map, :delete_mask, :save_mask, :save_mask_and_warp, :set_rough_state, :set_rough_centroid ]
+
   before_filter :check_administrator_role, :only => [:publish]
 
 
@@ -940,12 +945,13 @@ init_nepa_document
 
   def wms
 
-#logger.debug "BWE in wms: "+MAPSERVER_URL
-    
     unless @@mapscript_exists
       mapserver_wms
     else
       begin
+
+logger.debug "BWE in mapscript_exists"
+
         @map = Map.find(params[:id])
         #status is additional query param to show the unwarped wms
         status = params["STATUS"].to_s.downcase || "unwarped"
@@ -1023,8 +1029,8 @@ ows.setParameter("VeRsIoN","1.1.1")
      params[:status] = "warped"
      params[:format] = "image/png"
      params[:service] = "WMS"
-#params[:version] = "1.1.1"
-params[:version] = "1.3.0"
+params[:version] = "1.1.1"
+#params[:version] = "1.3.0"
      params[:request] = "GetMap"
      params[:srs] = "EPSG:900913"
      params[:width] = "256"

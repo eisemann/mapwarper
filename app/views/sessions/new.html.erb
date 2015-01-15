@@ -1,20 +1,33 @@
 
+<%= 
+### BWE UPDATE: added markup for omniauth/google login ###
+-%>
+<div class="column span-12">
+	<h2>Social Login</h2>
+	<a href="/auth/google_oauth2"><%= image_tag "/images/authbuttons-master/png/google_64.png", :size => "64x64", :alt => "Google" %><p class="sociallogintext">Google</p></a>
+</div>
 
-    <h2>Login with User ID and Password:</h2>
-    
-    <% form_tag session_path do %>
 
-    <p><label for="email">Email</label><br/>
-    <%= text_field_tag "email" %></p>
+<%= 
+### BWE UPDATE: added column for site login ###
+-%>    
+<% form_tag session_path do %>
+	<div class="column span-12">
 
-    <p><label for="password">Password</label><br />
-    <%= password_field_tag "password" %></p>
+		<h2>Site Login</h2>
 
-    <p><label for="remember_me">Remember me:</label>
-    <%= check_box_tag "remember_me" %></p>
+		<p><label for="email">Email</label><br/>
+		<%= text_field_tag "email" %></p>
 
-    <p><%= submit_tag "Log in" %><%= link_to "Sign Up", new_user_path %></p>
+		<p><label for="password">Password</label><br />
+		<%= password_field_tag "password" %></p>
 
-    <p><%= link_to "Forgot Password?", forgot_password_path %>
-    </p>
-    <% end %>
+		<p><label for="remember_me">Remember me:</label>
+		<%= check_box_tag "remember_me" %></p>
+
+		<p><%= submit_tag "Log in" %><%= link_to "Sign Up", new_user_path %></p>
+
+		<p><%= link_to "Forgot Password?", forgot_password_path %></p>
+	</div>
+
+<% end %>

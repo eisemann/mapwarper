@@ -3,22 +3,44 @@ class SessionsController < ApplicationController
    layout 'application'
    before_filter :login_required, :only => :destroy
   # before_filter :not_logged_in_required, :only => [ :create]
- before_filter :not_logged_in_required, :only => [:new, :create]
+  before_filter :not_logged_in_required, :only => [:new, :create]
+
    # render new.rhtml
    def new
      @html_title = "Login"
      if  (["Rectify_tab", "Crop_tab", "Align_tab", "Export_tab","Activity_tab", "Comments_tab"].include?(params[:back].to_s) && params[:mapid])
        session[:return_to] = map_path(:id => params[:mapid], :anchor => params[:back])
+     end
    end
-   end
+
 
    def create
       password_authentication(params[:email], params[:password])
    end
 
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  added create_with_omniauth
+### ------------------------------------------------------------------------------------------------------------------------ ###
+   def create_with_omniauth
+	auth = request.env["omniauth.auth"]
+	user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+	session[:user_id] = user.id
+	redirect_to root_url, :notice => "Signed in!"
+
+	#render auth.to_yaml
+   end
+
+
    def destroy
       self.current_user.forget_me if logged_in?
       cookies.delete :auth_token
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  kill session
+### ------------------------------------------------------------------------------------------------------------------------ ###	
+session[:user_id] = nil
+
       reset_session
       flash[:notice] = "You have been logged out."
       redirect_to login_path
