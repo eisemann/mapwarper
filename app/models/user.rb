@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE updates:  added create_with_omniauth
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-def self.create_with_omniauth(auth)
+def self.omniauth_create(auth)
 
   create! do |user|
     user.provider = auth["provider"]

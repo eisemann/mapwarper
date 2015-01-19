@@ -19,17 +19,33 @@ class SessionsController < ApplicationController
    end
 
 
+
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-### BWE updates:  added create_with_omniauth
+### BWE updates:  added omniauth_create
 ### ------------------------------------------------------------------------------------------------------------------------ ###
-   def create_with_omniauth
+def omniauth_create
 	auth = request.env["omniauth.auth"]
-	user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+	user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.omniauth_create(auth)
 	session[:user_id] = user.id
 	redirect_to root_url, :notice => "Signed in!"
+end
 
-	#render auth.to_yaml
-   end
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  omniauth_create_debug
+### ------------------------------------------------------------------------------------------------------------------------ ###
+def omniauth_create_debug
+	render auth.to_yaml
+end
+
+### ------------------------------------------------------------------------------------------------------------------------ ###
+### BWE updates:  omniauth_failure
+### ------------------------------------------------------------------------------------------------------------------------ ###
+def omniauth_failure
+	failed_login("Social Authorization Failed!")
+end
+
+
+
 
 
    def destroy
