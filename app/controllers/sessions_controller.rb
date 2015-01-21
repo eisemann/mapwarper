@@ -28,12 +28,16 @@ def omniauth_create
 	user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.omniauth_create(auth)
 	session[:user_id] = user.id
 	redirect_to root_url, :notice => "Signed in!"
+	
+	rescue
+		failed_login("Social Login Failed!")
 end
 
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 ### BWE updates:  omniauth_create_debug
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 def omniauth_create_debug
+	auth = request.env["omniauth.auth"]
 	render auth.to_yaml
 end
 
@@ -41,7 +45,7 @@ end
 ### BWE updates:  omniauth_failure
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 def omniauth_failure
-	failed_login("Social Authorization Failed!")
+	failed_login("Social Authentication Failed!")
 end
 
 

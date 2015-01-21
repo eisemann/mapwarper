@@ -50,17 +50,19 @@ class User < ActiveRecord::Base
 ### ------------------------------------------------------------------------------------------------------------------------ ###
 def self.omniauth_create(auth)
 
-  create! do |user|
-    user.provider = auth["provider"]
-    user.uid = auth["uid"]
-    
+	create! do |user|
+		user.provider = auth["provider"]
+		user.uid = auth["uid"]
 
-	user.login = auth["provider"] + "-" + auth["uid"]
-	#user.email = user.login + "@google.com"
-	user.email = auth["info"]["email"]
-	user.enabled = true
 
-  end
+		#user.login = auth["provider"] + "-" + auth["uid"]
+		#user.email = user.login + "@google.com"
+
+		user.login = auth["info"]["name"]
+		user.email = auth["info"]["email"]
+		user.enabled = true
+
+	end
 end
 
 
